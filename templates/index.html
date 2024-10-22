@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Cura</title>
+  <!-- <link href="style.css" rel="stylesheet">
+  <link href="mediaqueries.css" rel="stylesheet"> -->
+  <link href={{url_for('static', filename='style.css')}} rel="stylesheet">
+
+  <script>
+      function toggleMenu() {
+        const menu = document.querySelector(".menu-links");
+        const icon = document.querySelector(".hamburger-icon");
+        menu.classList.toggle("open");
+        icon.classList.toggle("open"); }
+    function startTimerAndCapture() {
+        let countdown = 5;  // 5-second timer
+        const timerDisplay = document.getElementById('timer');
+        timerDisplay.innerText = countdown;
+
+        const interval = setInterval(() => {
+            countdown--;
+            timerDisplay.innerText = countdown;
+
+            if (countdown <= 0) {
+                clearInterval(interval);
+                captureImage();  // Call the capture function after 5 seconds
+            }
+        }, 1000);
+    }
+
+    function captureImage() {
+        fetch('/capture_image', {
+            method: 'POST',
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                // Display the captured image
+                // document.getElementById('captured-img').src = data.image_path;
+                console.log(data);
+                hairRes = data.results;
+                hairRes = JSON.parse(hairRes);
+                document.getElementById('hair-result').innerText = hairRes.labelName;
+                document.getElementById('hair-percentage').innerText = parseFloat(hairRes.confidence * 100).toFixed(2);
+            } else {
+                alert('Failed to capture image: ' + data.message);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+</script>
+</head>
+
+<body>
+  <!-- Desktop Navigation -->
+  <nav id="desktop-nav">
+    <ul class="nav-links left-links">
+      <li><a href="#our mission">our mission</a></li>
+      <li><a href="#test your hair">test your hair</a></li>
+    </ul>
+    <div class="logo">
+      <img src="{{ url_for('static', filename='assets/cura (27).png') }}" alt="cura logo" class="logo-img">
+    </div>
+    <ul class="nav-links right-links">
+      <li><a href="#hair care">hair care</a></li>
+      <li><a href="#hair styles">hair styles</a></li>
+    </ul>
+  </nav>
+
+
+  <!-- Mobile Navigation (Hamburger Menu) -->
+  <nav id="hamburger-nav">
+    <div class="logo">cura</div>
+    <div class="hamburger-menu">
+      <div class="hamburger-icon" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <ul class="menu-links">
+        <li><a href="#our mission" onclick="toggleMenu()">our mission</a></li>
+        <li><a href="#test your hair" onclick="toggleMenu()">test your hair</a></li>
+        <li><a href="#products for you" onclick="toggleMenu()">products for you</a></li>
+        <li><a href="#hair styles" onclick="toggleMenu()">hair styles</a></li>
+      </ul>
+    </div>
+  </nav>
+  <section id="main page">
+    <div class="section__pic-container1">
+      <!-- <img src="./assets/cura (25).png" alt="main page girls"> -->
+      <img src="{{ url_for('static', filename='assets/cura (25).png') }}" alt="main page girls">
+    </div>
+
+  </section>
+  <section id="our mission">
+    <div class="section-container">
+      <div class="section__pic-container2">
+        <img src="{{ url_for('static', filename='assets/cura (4).png') }}" alt="women pic" class="our mission-pic">
+      </div>
+      <div class="our-mission-details-container">
+        <div class="section__text-container">
+          <div id="rectangle1"></div>
+          <div class="text-content1">
+            <h1 class="title">Meet Cura</h1>
+            <p>Meet Cura, an innovative AI-powered platform designed to revolutionize your personal grooming and styling
+              routine by offering tailored recommendations just for you. Harnessing advanced technology, Cura
+              meticulously
+              analyzes your unique hair texture, ensuring that every suggestion is perfectly aligned with your
+              individual
+              needs.</p>
+          </div>
+          <div id="rectangle2"></div>
+          <div class="text-content2">
+            <h1 class="title">Our Mission</h1>
+            <p>Cura empowers you to embrace your authentic self, making every day a good hair day. Experience the future
+              of
+              personalized beauty with Cura, where your individuality is celebrated and expertly catered to your needs.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <section id="test your hair">
+    <!-- <div class="section-container">
+      <div class="section__pic-container3">
+        <img src="{{ url_for('video_feed') }}" alt="Video_Feed" class="video_feed">
+        <div class="result-container">
+          <b>Results: </b>
+          <p id="hair-result">None Yet</p>
+          <b>Confidence Level: </b>
+          <p id="hair-percentage">None Yet</p>
+        </div>
+      </div>
+    </div>
+    </div>
+    <div class="btn-container">
+      <button onclick="startTimerAndCapture()">Capture in 5 seconds</button>
+      <p>Timer: <span id="timer">0</span> seconds</p>
+    </div> -->
+
+    
+    <div style="display: flex; width: 100%; flex-direction: row; gap: 16px;">
+      
+      <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;">
+        <img src="{{ url_for('video_feed') }}" alt="Video_Feed" class="video_feed">
+        
+        <div class="btn-container">
+          <button onclick="startTimerAndCapture()">Capture in 5 seconds</button>
+          <p>Timer: <span id="timer">0</span> seconds</p>
+        </div>
+      </div>
+
+
+
+
+      <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <div>
+          <b>Make sure your hair isn't tied up and look forward on the screen then click the button.</b>
+        </div>
+        <div>
+          <b>Results: </b>
+          <span id="hair-result">None Yet</span>
+        </div>
+        <div>
+          <b>Confidence Level: </b>
+          <span id="hair-percentage">None Yet</span>
+        </div>
+      </div>
+    </div>
+    
+  
+    <div style="display: flex; width: 100%; flex-direction: row; align-items: center; justify-content: center; gap: 16px;">
+      <button class="btn btn-color" onclick="location.href='./#hair styles'">
+        hairstyles
+      </button>
+      <button class=" btn btn-color" onclick="location.href='./#hair care'">
+        products for you
+      </button>
+    </div>
+  
+  </section>
+
+
+
+
+<section id="hair care">
+  <div class="prod_header">
+    <img src="{{ url_for('static', filename='assets/cura (30).png') }}" alt="main page girls" class="header-img">
+
+    <div class="section-container">
+      <div class="section__pic-container4">
+        <img src="{{ url_for('static', filename='assets/1hair.png') }}" alt="1hair" class="hair-care1-pic">
+      </div>
+      <div class="section__pic-container4">
+        <img src="{{ url_for('static', filename='assets/2hair.png') }}" alt="2hair" class="hair-care2-pic">
+      </div>
+      <div class="section__pic-container4">
+        <img src="{{ url_for('static', filename='assets/3hair.png') }}" alt="3hair" class="hair-care3-pic">
+      </div>
+      <div class="section__pic-container4">
+        <img src="{{ url_for('static', filename='assets/4hair.png') }}"alt="4hair" class="hair-care4-pic">
+      </div>
+    </div>
+    <div class="haire-care-details-container">
+      <div class="section__text-container">
+        <p>
+          <span class="segment">Type 1 Hair</span>
+          <span class="segment">Type 2 Hair</span>
+          <span class="segment">Type 3 Hair</span>
+          <span class="segment">Type 4 Hair</span>
+        </p>
+
+      </div>
+    </div>
+    <div class="btn-container1">
+
+      <img src="{{ url_for('static', filename='assets/prodbutton.png') }}" alt="product button" class="icon" style="width: 200px; height: 100px;"
+        onclick="location.href='https://www.amazon.com/hz/wishlist/ls/2AAKV0KKZ7Z3I?ref_=wl_share'">
+      <img src="{{ url_for('static', filename='assets/prodbutton.png') }}" alt="product button" class="icon" style="width: 200px; height: 100px;"
+        onclick="location.href='https://www.amazon.com/hz/wishlist/ls/1GSQW1EELGPYE?ref_=wl_share'">
+      <img src="{{ url_for('static', filename='assets/prodbutton.png') }}" alt="product button" class="icon" style="width: 200px; height: 100px;"
+        onclick="location.href='https://www.amazon.com/hz/wishlist/ls/PT4OQOF98NP1?ref_=wl_share'">
+      <img src="{{ url_for('static', filename='assets/prodbutton.png') }}" alt="product button" class="icon" style="width: 200px; height: 100px;"
+        onclick="location.href='https://www.amazon.com/hz/wishlist/ls/1QF99WRF3U1J5?ref_=wl_share'">
+      </div>
+    </div>
+
+</section>
+<section id="hair styles">
+  <div class="style_header">
+    <img src="{{ url_for('static', filename='assets/cura (31).png') }}" alt="main page girls" class="header-img">
+
+    <div class="section-container">
+      <div class="section__pic-container4">
+        <img src="{{ url_for('static', filename='assets/1hair.png') }}" alt="1hair" class="hair-care1-pic">
+      </div>
+      <div class="section__pic-container4">
+        <img src="{{ url_for('static', filename='assets/2hair.png') }}" alt="2hair" class="hair-care2-pic">
+      </div>
+      <div class="section__pic-container4">
+        <img src="{{ url_for('static', filename='assets/3hair.png') }}" alt="3hair" class="hair-care3-pic">
+      </div>
+      <div class="section__pic-container4">
+        <img src="{{ url_for('static', filename='assets/4hair.png') }}"alt="4hair" class="hair-care4-pic">
+      </div>
+    
+  </div>
+  <div class="haire-care-details-container">
+    <div class="section__text-container">
+      <p>
+        <span class="segment">Type 1 Hair</span>
+        <span class="segment">Type 2 Hair</span>
+        <span class="segment">Type 3 Hair</span>
+        <span class="segment">Type 4 Hair</span>
+      </p>
+
+    </div>
+  </div>
+  <div class="btn-container1">
+
+    <img src="{{ url_for('static', filename='assets/stylebutton.png') }}" alt="product button" class="icon" style="width: 200px; height: 100px;"
+      onclick="location.href='https://www.pinterest.com/britneyforeman/straight-hairstyles/'">
+    <img src="{{ url_for('static', filename='assets/stylebutton.png') }}" alt="product button" class="icon" style="width: 200px; height: 100px;"
+      onclick="location.href='https://www.pinterest.com/curlsbybebonia/wavy-hair/'">
+    <img src="{{ url_for('static', filename='assets/stylebutton.png') }}" alt="product button" class="icon" style="width: 200px; height: 100px;"
+      onclick="location.href='https://www.pinterest.com/naturallycurly/curly-hair-pinterest-tutorials/'">
+    <img src="{{ url_for('static', filename='assets/stylebutton.png') }}" alt="product button" class="icon" style="width: 200px; height: 100px;"
+      onclick="location.href='https://www.pinterest.com/akakontoh/kinki-hair-do/'">
+
+
+
+
+
+
+
+  </div>
+</section>
+
+<script src="script.js"></script>
+</body>
+
+</html>
