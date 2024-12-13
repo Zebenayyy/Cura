@@ -1,6 +1,6 @@
 # Cura
 
-!https://www.youtube.com/watch?v=jJuiHys693k!
+https://www.youtube.com/watch?v=jJuiHys693k
 
 
 
