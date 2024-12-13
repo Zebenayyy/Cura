@@ -1,6 +1,11 @@
 # Cura
 
 !https://www.youtube.com/watch?v=jJuiHys693k!
+
+
+
+
+
 **Inspiration**
 Our inspiration for Cura came from personal experiences within our team. Some of us grew up with curly hair in families that had no knowledge of how to properly care for it. This led to confusion and frustration around which products to use and how to manage our hair effectively. We realized that many people, particularly women, face the same challenges with their unique hair textures. Cura was created to empower individuals with personalized hair care guidance, eliminating the guesswork and helping them embrace their natural beauty.
 
